@@ -1,0 +1,17 @@
+{
+  "version": 2,
+  "dgSpecHash": "xwO2mQ/Q/vE=",
+  "success": true,
+  "projectFilePath": "d:\\SUML\\SUML\\SUML\\SUML.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\Administrator\\.nuget\\packages\\controlzex\\4.3.0\\controlzex.4.3.0.nupkg.sha512",
+    "C:\\Users\\Administrator\\.nuget\\packages\\mahapps.metro\\2.0.0\\mahapps.metro.2.0.0.nupkg.sha512",
+    "C:\\Users\\Administrator\\.nuget\\packages\\materialdesigncolors\\1.2.7\\materialdesigncolors.1.2.7.nupkg.sha512",
+    "C:\\Users\\Administrator\\.nuget\\packages\\materialdesignthemes\\3.2.0\\materialdesignthemes.3.2.0.nupkg.sha512",
+    "C:\\Users\\Administrator\\.nuget\\packages\\microsoft.xaml.behaviors.wpf\\1.1.19\\microsoft.xaml.behaviors.wpf.1.1.19.nupkg.sha512",
+    "C:\\Users\\Administrator\\.nuget\\packages\\newtonsoft.json\\12.0.2\\newtonsoft.json.12.0.2.nupkg.sha512",
+    "C:\\Users\\Administrator\\.nuget\\packages\\oneminecraftlauncher.core\\1.1.6\\oneminecraftlauncher.core.1.1.6.nupkg.sha512",
+    "C:\\Users\\Administrator\\.nuget\\packages\\system.text.json\\4.7.2\\system.text.json.4.7.2.nupkg.sha512"
+  ],
+  "logs": []
+}

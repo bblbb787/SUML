@@ -1,0 +1,206 @@
+﻿<Window x:Class="PureMCLauncher.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+        Title="PureMC Launcher"
+        Height="600"
+        Width="900"
+        Background="#F8F9FA"
+        WindowStartupLocation="CenterScreen">
+    <Grid>
+        <!-- 顶部标题栏 -->
+        <Border Height="50"
+                Background="#343A40">
+            <Grid>
+                <TextBlock Text="PureMC Launcher" 
+                           HorizontalAlignment="Left"
+                           VerticalAlignment="Center"
+                           Margin="15,0,0,0"
+                           FontSize="18"
+                           FontWeight="Bold"
+                           Foreground="White"/>
+            </Grid>
+        </Border>
+
+        <!-- 主内容区 -->
+        <Grid Margin="0,50,0,0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <!-- 功能按钮区域 -->
+            <StackPanel Orientation="Horizontal" Margin="15,10,15,10">
+                <Button Content="刷新版本列表" Click="RefreshVersions" Style="{StaticResource RoundedButton}"/>
+                <Button Content="下载选中版本" Click="DownloadVersion" Style="{StaticResource RoundedButton}" Background="#28A745"/>
+                <Button Content="启动游戏" Click="LaunchGame" Style="{StaticResource RoundedButton}" Background="#007BFF"/>
+                <Button Content="设置" Click="OpenSettings" Style="{StaticResource RoundedButton}" Background="#6C757D"/>
+            </StackPanel>
+
+            <!-- 主功能区 -->
+            <TabControl Grid.Row="1" Margin="15">
+                <!-- 游戏启动标签页 -->
+                <TabItem Header="游戏启动">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+
+                        <!-- 游戏设置卡片 -->
+                        <Border Style="{StaticResource CardBorder}" Grid.Row="0">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="100"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+
+                                <!-- 版本选择 -->
+                                <TextBlock Grid.Row="0" Grid.Column="0" Text="游戏版本:" VerticalAlignment="Center" Margin="0,8,0,8"/>
+                                <ComboBox x:Name="VersionComboBox" Grid.Row="0" Grid.Column="1" ItemsSource="{Binding Versions}" DisplayMemberPath="Id" 
+                                          SelectedItem="{Binding SelectedVersion}" SelectionChanged="VersionSelected" 
+                                          Style="{StaticResource CustomComboBox}" Margin="0,5,0,5"/>
+
+                                <!-- 内存分配 -->
+                                <TextBlock Grid.Row="1" Grid.Column="0" Text="内存分配:" VerticalAlignment="Center" Margin="0,8,0,8"/>
+                                <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
+                                    <Slider x:Name="MemorySlider" Minimum="1024" Maximum="8192" Value="4096" TickFrequency="1024" IsSnapToTickEnabled="True" Width="300"/>
+                                    <TextBlock Text="{Binding ElementName=MemorySlider, Path=Value, StringFormat={}{0}MB}" Margin="10,0,0,0"/>
+                                </StackPanel>
+
+                                <!-- Java路径 -->
+                                <TextBlock Grid.Row="2" Grid.Column="0" Text="Java路径:" VerticalAlignment="Center" Margin="0,8,0,8"/>
+                                <StackPanel Grid.Row="2" Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
+                                    <TextBox x:Name="JavaPathTextBox" Width="400" IsReadOnly="True" Style="{StaticResource CustomTextBox}" Margin="0,5,5,5"/>
+                                    <Button Content="浏览" Click="BrowseJavaPath" Padding="8,4"/>
+                                </StackPanel>
+
+                                <!-- JVM参数 -->
+                                <TextBlock Grid.Row="3" Grid.Column="0" Text="JVM参数:" VerticalAlignment="Top" Margin="0,8,0,8"/>
+                                <TextBox x:Name="JvmArgsTextBox" Grid.Row="3" Grid.Column="1" Text="-Xmx4G -XX:+UnlockExperimentalVMOptions -XX:+UseG1GC" 
+                                         Style="{StaticResource CustomTextBox}" AcceptsReturn="True" Height="60" Margin="0,5,0,5"/>
+                            </Grid>
+                        </Border>
+
+                        <!-- 下载进度卡片 -->
+                        <Border Style="{StaticResource CardBorder}" Grid.Row="1" Margin="0,10,0,10">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+
+                                <TextBlock Text="下载进度:" Grid.Row="0" Margin="0,5,0,5" Style="{StaticResource TextBlockTitle}"/>
+                                <ProgressBar x:Name="DownloadProgressBar" Value="0" Grid.Row="1" Height="15" Margin="0,5,0,5"/>
+                            </Grid>
+                        </Border>
+
+                        <!-- 日志区域 -->
+                        <Border Style="{StaticResource CardBorder}" Grid.Row="2">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="*"/>
+                                </Grid.RowDefinitions>
+
+                                <TextBlock Text="日志输出:" Grid.Row="0" Margin="0,5,0,5" Style="{StaticResource TextBlockTitle}"/>
+                                <TextBox x:Name="LogTextBox" Grid.Row="1" AcceptsReturn="True" IsReadOnly="True" 
+                                         Style="{StaticResource CustomTextBox}" TextWrapping="Wrap" VerticalScrollBarVisibility="Auto"/>
+                            </Grid>
+                        </Border>
+                    </Grid>
+                </TabItem>
+
+                <!-- 版本管理标签页 -->
+                <TabItem Header="版本管理">
+                    <Border Style="{StaticResource CardBorder}">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+
+                            <!-- 已安装版本 -->
+                            <TextBlock Text="已安装版本" Grid.Row="0" Style="{StaticResource TextBlockTitle}"/>
+                            <ListView x:Name="InstalledVersionsList" Grid.Row="1" Margin="0,5,0,15">
+                                <ListView.View>
+                                    <GridView>
+                                        <GridViewColumn Header="版本号" DisplayMemberBinding="{Binding Id}" Width="150"/>
+                                        <GridViewColumn Header="类型" DisplayMemberBinding="{Binding Type}" Width="100"/>
+                                        <GridViewColumn Header="操作">
+                                            <GridViewColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <Button Content="删除" Foreground="Red" Padding="5,2"/>
+                                                </DataTemplate>
+                                            </GridViewColumn.CellTemplate>
+                                        </GridViewColumn>
+                                    </GridView>
+                                </ListView.View>
+                            </ListView>
+
+                            <!-- 可下载版本 -->
+                            <TextBlock Text="可下载版本" Grid.Row="2" Style="{StaticResource TextBlockTitle}"/>
+                            <ListView x:Name="AvailableVersionsList" Grid.Row="3" Margin="0,5,0,0">
+                                <ListView.View>
+                                    <GridView>
+                                        <GridViewColumn Header="版本号" DisplayMemberBinding="{Binding Id}" Width="150"/>
+                                        <GridViewColumn Header="类型" DisplayMemberBinding="{Binding Type}" Width="100"/>
+                                        <GridViewColumn Header="操作">
+                                            <GridViewColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <Button Content="下载" Foreground="Green" Padding="5,2"/>
+                                                </DataTemplate>
+                                            </GridViewColumn.CellTemplate>
+                                        </GridViewColumn>
+                                    </GridView>
+                                </ListView.View>
+                            </ListView>
+                        </Grid>
+                    </Border>
+                </TabItem>
+
+                <!-- 设置标签页 -->
+                <TabItem Header="设置">
+                    <Border Style="{StaticResource CardBorder}">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="100"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <!-- 游戏目录 -->
+                            <TextBlock Grid.Row="0" Grid.Column="0" Text="游戏目录:" VerticalAlignment="Center" Margin="0,8,0,8"/>
+                            <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
+                                <TextBox x:Name="GameDirTextBox" Width="400" IsReadOnly="True" Style="{StaticResource CustomTextBox}" Margin="0,5,5,5"/>
+                                <Button Content="浏览" Click="BrowseGameDir" Padding="8,4"/>
+                            </StackPanel>
+
+                            <!-- 自动检查更新 -->
+                            <TextBlock Grid.Row="1" Grid.Column="0" Text="自动检查更新:" VerticalAlignment="Center" Margin="0,8,0,8"/>
+                            <CheckBox Grid.Row="1" Grid.Column="1" Margin="0,5,0,5" IsChecked="True"/>
+
+                            <!-- 保存按钮 -->
+                            <Button Grid.Row="2" Grid.Column="1" Content="保存设置" Style="{StaticResource RoundedButton}" Margin="0,20,0,0" HorizontalAlignment="Left"/>
+                        </Grid>
+                    </Border>
+                </TabItem>
+            </TabControl>
+        </Grid>
+    </Grid>
+</Window>
